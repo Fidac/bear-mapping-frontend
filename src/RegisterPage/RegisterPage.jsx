@@ -36,6 +36,7 @@ function RegisterPage() {
 
     return (
         <div className="col-lg-8 offset-lg-2">
+            <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
             <h2>Register</h2>
             <form name="form" onSubmit={handleSubmit}>
                 <div className="form-group">
