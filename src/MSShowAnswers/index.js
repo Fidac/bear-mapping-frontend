@@ -38,7 +38,7 @@ function MSShowAnswers(props) {
     const fetchPaperAnswers = (rqId) => {
         console.log("FETCH ANSWERS");
         // Call Amr API to get the answers
-        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/answerQuestion/${rqId}?userId=${user.id}`)
+        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/answerQuestion/${rqId}?userId=${user.id}&articleId=${paper.key}`)
             .then(res => {
                 if (res.ok){
                     return res.json();
@@ -56,6 +56,7 @@ function MSShowAnswers(props) {
                 //     console.log(users);
                 //     console.log(usersName);
                 // })
+                console.log("Getting ANSWERS..." + data);
                 history.push({pathname: "/showAnswers", state: {paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions, info:data, researchQuestionId: rqId} });
             })
             .catch(error => {
