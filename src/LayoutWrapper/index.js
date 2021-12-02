@@ -30,12 +30,12 @@ const LayoutWrapper = (WrappedComponent) => {
                                     <span className="nav-text">Create</span>
                                 </Link>
                             </Menu.Item>
-                            {/*<Menu.Item key="3">*/}
-                            {/*    <Link to="/list" >*/}
-                            {/*        <Icon type="form"/>*/}
-                            {/*        <span className="nav-text">List</span>*/}
-                            {/*    </Link>*/}
-                            {/*</Menu.Item>*/}
+                            <Menu.Item key="8">
+                                <Link to="/login">
+                                    <Icon type="form"/>
+                                    <span className="nav-text">Logout</span>
+                                </Link>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
                     <Layout>

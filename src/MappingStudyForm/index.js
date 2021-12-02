@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import moment from "moment";
 import {isEmpty, isNumber} from "../utils/utils";
+import LayoutWrapper from "../LayoutWrapper";
 
 const {Option} = Select;
 const InputGroup = Input.Group;
@@ -250,23 +251,23 @@ export class MappingStudyForm extends Component {
                             </div>
                         </Row>
                     </div>
-                    <div className="form-row">
-                        <Row type="flex" justify="start">
-                            <Col span={3}>
-                                <label className="required-field">Area</label>
-                            </Col>
-                            <Col span={8}>
-                                <Input
-                                    value={this.state.area}
-                                    onChange={this.onAreaChange}
-                                    onBlur={this.validateArea}
-                                    onClick={clearStatus}
-                                />
-                                {this.state.validation.area.error &&
-                                <div className="input-error">{this.state.validation.area.error}</div>}
-                            </Col>
-                        </Row>
-                    </div>
+                    {/*<div className="form-row">*/}
+                    {/*    <Row type="flex" justify="start">*/}
+                    {/*        <Col span={3}>*/}
+                    {/*            <label className="required-field">Area</label>*/}
+                    {/*        </Col>*/}
+                    {/*        <Col span={8}>*/}
+                    {/*            <Input*/}
+                    {/*                value={this.state.area}*/}
+                    {/*                onChange={this.onAreaChange}*/}
+                    {/*                onBlur={this.validateArea}*/}
+                    {/*                onClick={clearStatus}*/}
+                    {/*            />*/}
+                    {/*            {this.state.validation.area.error &&*/}
+                    {/*            <div className="input-error">{this.state.validation.area.error}</div>}*/}
+                    {/*        </Col>*/}
+                    {/*    </Row>*/}
+                    {/*</div>*/}
                     <div className="form-row">
                         <Row type="flex" justify="start">
                             <Col span={3}>
@@ -349,4 +350,7 @@ MappingStudyForm.propTypes = {
     clearStatus: PropTypes.func.isRequired
 };
 
-export default MappingStudyForm;
+// export default MappingStudyForm;
+
+const WrappedGamePage = LayoutWrapper(MappingStudyForm);
+export default WrappedGamePage;

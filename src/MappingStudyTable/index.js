@@ -7,7 +7,7 @@ import {isEmpty} from "../utils/utils";
 // import '../static/css/main.css';
 
 function MappingStudyTable(props) {
-    const {MSInfo, setSelectedMS, deleteMS, listPapersMS, exportMS} = props;
+    const {MSInfo, setSelectedMS, deleteMS, listPapersMS, exportMS, shareMS} = props;
     const columns = [
         {
             title: 'Name',
@@ -56,14 +56,16 @@ function MappingStudyTable(props) {
             key: 'action',
             render: (text, ms) => (
                 <span>
-                        <a onClick={() => setSelectedMS(ms)}>Edit</a>
-                        <Divider type="vertical"/>
-                        <a onClick={() => deleteMS(ms.key)}>Delete</a>
-                        <Divider type="vertical"/>
-                        <a onClick={() => listPapersMS(ms.key)}>List</a>
-                        <Divider type="vertical"/>
-                        <a onClick={() => exportMS(ms.key)}>Export</a>
-                    </span>
+                    <a onClick={() => setSelectedMS(ms)}>Edit</a>
+                    <Divider type="vertical"/>
+                    <a onClick={() => deleteMS(ms.key)}>Delete</a>
+                    <Divider type="vertical"/>
+                    <a onClick={() => listPapersMS(ms.key)}>List</a>
+                    <Divider type="vertical"/>
+                    <a onClick={() => exportMS(ms.key)}>Export</a>
+                    <Divider type="vertical"/>
+                    <a onClick={() => shareMS(ms.key)}>Share</a>
+                </span>
             )
         },
     ];
@@ -88,7 +90,8 @@ MappingStudyTable.propTypes = {
     MSInfo: PropTypes.array.isRequired,
     setSelectedMS: PropTypes.func.isRequired,
     deleteMS: PropTypes.func.isRequired,
-    listPapersMS: PropTypes.func.isRequired
+    listPapersMS: PropTypes.func.isRequired,
+    shareMS: PropTypes.func.isRequired
 };
 
 export default MappingStudyTable;

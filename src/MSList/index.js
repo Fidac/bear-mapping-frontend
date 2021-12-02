@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {Divider, Table} from 'antd';
+import {Button, Divider, Table} from 'antd';
 import Select from 'react-select';
 import config from 'config';
 import {msgType} from "../MappingStudyForm";
@@ -10,6 +10,7 @@ import LayoutWrapper from "../LayoutWrapper";
 import {MSPage} from "../MSPage";
 import dateformat from "dateformat";
 import {useSelector} from "react-redux";
+import {isEmpty} from "../utils/utils";
 // import '../App/App.css';
 // import '../static/css/main.css';
 
@@ -152,10 +153,10 @@ function MSList(props) {
         console.log("SORTING BY CONSENSUS");
         // Call Amr API here
         let data = {
-            method: 'POST',
-            body: JSON.stringify({
-                'userId': user.id,
-            }),
+            method: 'GET',
+            // body: JSON.stringify({
+            //     'userId': user.id,
+            // }),
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -174,6 +175,7 @@ function MSList(props) {
                 if(data == false){
                     //Show message that the selection failed
                 }
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
             })
             .catch(error => {
                 console.log(error);
@@ -299,13 +301,13 @@ function MSList(props) {
     return (
         <div>
             <Select options={getOptions()} onChange={handleChange}/>
-            <Table columns={columns} dataSource={paperData}/>
-            <button type="button" onClick={handleSubmit}>
-                Submit
-            </button>
-            <button type="button" onClick={handleSort}>
+            <Button type="primary" htmlType="submit" onClick={handleSort}>
                 Sort Consensus
-            </button>
+            </Button>
+            <Table columns={columns} dataSource={paperData}/>
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                Submit
+            </Button>
         </div>
     )
 }

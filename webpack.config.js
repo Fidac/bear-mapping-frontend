@@ -9,6 +9,14 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                    },
+                ],
+            },
+            {
                 test: /\.(js|jsx)?$/,
                 loader: 'babel-loader',
                 // exclude: /node_modules/

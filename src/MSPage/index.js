@@ -143,6 +143,17 @@ export function MSPage() {
         // See how to export in REACT
     };
 
+    const shareMS = (id) => {
+        let fetchData = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        history.push({pathname: "/share", state: {mappingStudyId: id} });
+    };
+
+
     const deleteMS = (id) => {
         let fetchData = {
             method: 'DELETE',
@@ -262,6 +273,7 @@ export function MSPage() {
                 deleteMS={deleteMS}
                 listPapersMS={listPapersMS}
                 exportMS={exportMS}
+                shareMS={shareMS}
             />
         </Fragment>
     )

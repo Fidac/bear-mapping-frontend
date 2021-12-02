@@ -7,6 +7,7 @@ import { userActions } from '../_actions';
 import LayoutWrapper from "../LayoutWrapper";
 // import '../App/App.css';
 // import '../static/css/main.css';
+import logo from './bearmapping-logo.png'
 
 function HomePage() {
     const users = useSelector(state => state.users);
@@ -23,7 +24,9 @@ function HomePage() {
 
     return (
         <div className="col-lg-8 offset-lg-2">
-            <h1>Hi {user.fullname}!</h1>
+            {/*<h1>Hi {user.fullname}!</h1>*/}
+            {/*<link rel="logo" href="./bearmapping-logo.png" />*/}
+            <img src={logo} className="bearmapping-logo" alt="logo" />
             {/*<p>You're logged in with React Hooks!!</p>*/}
             {/*<h3>All registered users:</h3>*/}
             {/*{users.loading && <em>Loading users...</em>}*/}
@@ -42,9 +45,9 @@ function HomePage() {
             {/*        )}*/}
             {/*    </ul>*/}
             {/*}*/}
-            <p>
-                <Link to="/login">Logout</Link>
-            </p>
+            {/*<p>*/}
+            {/*    <Link to="/login">Logout</Link>*/}
+            {/*</p>*/}
         </div>
     );
 }
