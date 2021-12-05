@@ -25,6 +25,7 @@ export function MSPage() {
     // const selectedCheck = new Set();
 
     const fetchMSInfo = async () => {
+        console.log("USER: " + user.id);
         await fetch(`${config.apiUrl}/mappingStudies?userId=${user.id}`)
             .then(res => {
                 if (res.ok){
@@ -115,7 +116,7 @@ export function MSPage() {
                 'Content-Type': 'application/json',
             }
         };
-        fetch(`${config.apiUrl}/mappingStudies/${id}`, data)
+        fetch(`${config.apiUrl}/mappingStudies/${id}?userId=${user.id}`, data)
             .then(res => {
             if (res.ok) {
                 return res.json();
@@ -161,7 +162,7 @@ export function MSPage() {
                 'Content-Type': 'application/json',
             },
         };
-        fetch(`${config.apiUrl}/mappingStudies/${id}`, fetchData)
+        fetch(`${config.apiUrl}/mappingStudies/${id}?userId=${user.id}`, fetchData)
             .then(res => {
                 if (res.ok) {
                 fetchMSInfo();

@@ -184,14 +184,48 @@ function MSList(props) {
 
     const handleAnswer = (paper) => {
         console.log("Handle Answer");
-        history.push({pathname: "/answers", state: {paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions} });
+        history.push({pathname: "/answers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions} });
     }
 
     const handleShowAnswers = (paper) => {
         console.log("Handle Show Answer");
         // let answers = {};
         // paperData[0].researchQuestions.map(rq => answers[rq.id] = {});
-        history.push({pathname: "/showAnswers", state: {paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, info: [], researchQuestionId: -1} });
+        history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, info: [], researchQuestionId: -1} });
+    }
+
+    const handlePaperWithAnswers = () => {
+        console.log("Get Papers with answers");
+
+        // Call Amr API here
+        let data = {
+            method: 'GET',
+            // body: JSON.stringify({
+            //     'userId': user.id,
+            // }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/articlesWithAnswers?userId=${user.id}`, data)
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                // else {
+                //     throw new Error("EmailOfCreator must be unique.")
+                // }
+            })
+            .then(data => {
+                console.log("Successful Obtain answers")
+                if(data == false){
+                    //Show message that the selection failed
+                }
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     const columns = [
@@ -303,6 +337,9 @@ function MSList(props) {
             <Select options={getOptions()} onChange={handleChange}/>
             <Button type="primary" htmlType="submit" onClick={handleSort}>
                 Sort Consensus
+            </Button>
+            <Button type="primary" htmlType="submit" onClick={handlePaperWithAnswers}>
+                Article Answers.
             </Button>
             <Table columns={columns} dataSource={paperData}/>
             <Button type="primary" htmlType="submit" onClick={handleSubmit}>

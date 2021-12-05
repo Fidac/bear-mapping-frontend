@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom";
 import LayoutWrapper from "../LayoutWrapper";
 import {MSPage} from "../MSPage";
 import {useSelector} from "react-redux";
+import parse from "html-react-parser";
 
 
 function MSShowAnswers(props) {
@@ -23,6 +24,7 @@ function MSShowAnswers(props) {
     // let users = props.history.location.state?.users;
     // let usersName = props.history.location.state?.usersName;
     let info = props.history.location.state?.info;
+    const msPapers = props.history.location.state?.msPapers
     let researchQuestionId = props.history.location.state?.researchQuestionId;
     // let researchQuestionId;
     // researchQuestions.map(rq =>  answers[rq.id] = {})
@@ -105,6 +107,10 @@ function MSShowAnswers(props) {
         //history.push({pathname: "/showAnswers", state: {paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions} });
     }
 
+    const handleBack = () => {
+        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId } });
+    }
+
     const columns = [
         {
             title: 'Users',
@@ -116,7 +122,7 @@ function MSShowAnswers(props) {
             title: 'Answer',
             dataIndex: 'answer',
             key: 'answer',
-            render: answer => <div>{answer}</div>
+            render: answer => <div>{parse(answer)}</div>
         }
     ];
     // let answersData = [];
@@ -142,9 +148,9 @@ function MSShowAnswers(props) {
             <div>{paper.title}</div>
             <Select options={getOptions()} onChange={handleChange}/>
             <Table columns={columns} dataSource={answersData}/>
-            {/*<button type="button" onClick={handleSubmit}>*/}
-            {/*    Submit*/}
-            {/*</button>*/}
+            <button type="button" onClick={handleBack}>
+                Go Back
+            </button>
         </div>
     )
 }

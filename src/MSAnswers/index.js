@@ -8,6 +8,11 @@ import {useHistory} from "react-router-dom";
 import LayoutWrapper from "../LayoutWrapper";
 import {MSPage} from "../MSPage";
 import {useSelector} from "react-redux";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import CKEditor from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 // import '../App/App.css';
 // import '../static/css/main.css';
 
@@ -18,17 +23,49 @@ function MSAnswers(props) {
     const paper = props.history.location.state?.paper
     const mappingStudyId = props.history.location.state?.mappingStudyId
     const researchQuestions = props.history.location.state?.researchQuestions
+    const msPapers = props.history.location.state?.msPapers
     let answers = {}
 
     for(let rq in researchQuestions){
         answers[rq.id] = "";
     }
 
-    // const history = useHistory();\
+    let modules = {
+        toolbar: [
+            [{ 'font': [] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline'],
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            [{ 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['clean']
+        ]
+    };
 
-    const insertAnswer = (key,answerText) => {
-        console.log("Info: " + key + " " + answerText.target.value);
-        answers[key] = answerText.target.value;
+    let formats = [
+        'font',
+        'size',
+        'bold', 'italic', 'underline',
+        'list', 'bullet',
+        'align',
+        'color', 'background'
+    ];
+
+    let state = {
+        comments: ''
+    }
+
+    const history = useHistory();
+
+    // const insertAnswer = (key,answerText) => {
+    //     console.log("Info: " + key + " " + answerText.target.value);
+    //     answers[key] = answerText.target.value;
+    // }
+
+    const insertAnswer = (key, e) => {
+        console.log("Info: " + e);
+        // answers[key] = answerText.target.value;
+        answers[key] = e;
     }
 
     const handleSubmit = () => {
@@ -70,6 +107,7 @@ function MSAnswers(props) {
                     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     //Show message that the selection failed
                 }
+                history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId } });
             })
             .catch(error => {
                 console.log(error);
@@ -87,11 +125,18 @@ function MSAnswers(props) {
             title: 'Answer',
             key: 'answer',
             render: (text, rq) => (
-                <input
-                    type="text"
-                    value={answers[rq.key]}
-                    onChange={(event) => insertAnswer(rq.key, event)}
-                />
+                // <textarea
+                //     // type="textarea"
+                //     value={answers[rq.key]}
+                //     onChange={(event) => insertAnswer(rq.key, event)}
+                // /> // onSubmit={handleSubmit}
+
+
+                <div>
+                    <ReactQuill theme="snow"  modules={modules}
+                                formats={formats} onChange={(event) => insertAnswer(rq.key, event)}
+                                value={state.comments || ''}/>
+                </div>
             )
         },
     ];
