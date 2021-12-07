@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {Divider, Table} from 'antd';
+import {Button, Divider, Table} from 'antd';
 import Select from 'react-select';
 import dateformat from "dateformat";
 import config from 'config';
@@ -18,13 +18,15 @@ function MSShowAnswers(props) {
     const paper = props.history.location.state?.paper
     const mappingStudyId = props.history.location.state?.mappingStudyId
     const researchQuestions = props.history.location.state?.researchQuestions
+    const selectedCheck = props.history.location.state?.selectedCheck;
+    const selectedUnPick = props.history.location.state?.selectedUnPick;
     const user = useSelector(state => state.authentication.user);
     const history = useHistory();
     // let answers = props.history.location.state?.answers;
     // let users = props.history.location.state?.users;
     // let usersName = props.history.location.state?.usersName;
     let info = props.history.location.state?.info;
-    const msPapers = props.history.location.state?.msPapers
+    let msPapers = props.history.location.state?.msPapers
     let researchQuestionId = props.history.location.state?.researchQuestionId;
     // let researchQuestionId;
     // researchQuestions.map(rq =>  answers[rq.id] = {})
@@ -59,7 +61,7 @@ function MSShowAnswers(props) {
                 //     console.log(usersName);
                 // })
                 console.log("Getting ANSWERS..." + data);
-                history.push({pathname: "/showAnswers", state: {paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions, info:data, researchQuestionId: rqId} });
+                history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions, info:data, researchQuestionId: rqId} });
             })
             .catch(error => {
                 console.log("ERROR " + error);
@@ -108,7 +110,9 @@ function MSShowAnswers(props) {
     }
 
     const handleBack = () => {
-        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId } });
+        console.log("MSPapers: " + msPapers);
+        console.log("Mapping Study: " + mappingStudyId);
+        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick } });
     }
 
     const columns = [
@@ -148,9 +152,12 @@ function MSShowAnswers(props) {
             <div>{paper.title}</div>
             <Select options={getOptions()} onChange={handleChange}/>
             <Table columns={columns} dataSource={answersData}/>
-            <button type="button" onClick={handleBack}>
+            {/*<button type="button" onClick={handleBack}>*/}
+            {/*    Go Back*/}
+            {/*</button>*/}
+            <Button type="primary" htmlType="submit" onClick={handleBack}>
                 Go Back
-            </button>
+            </Button>
         </div>
     )
 }

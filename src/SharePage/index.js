@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {Divider, Table} from 'antd';
+import {Button, Divider, Table} from 'antd';
 import config from 'config';
 import {msgType} from "../MappingStudyForm";
 import {useHistory} from "react-router-dom";
@@ -74,9 +74,12 @@ function MSShare(props) {
                 value={emailToShare}
                 onChange={(event) => insertEmail(event)}
             />
-            <button type="button" onClick={handleSubmit}>
+            {/*<button type="button" onClick={handleSubmit}>*/}
+            {/*    Submit*/}
+            {/*</button>*/}
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
-            </button>
+            </Button>
         </div>
     )
 }

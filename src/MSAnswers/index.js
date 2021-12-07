@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {Divider, Table} from 'antd';
+import {Button, Divider, Table} from 'antd';
 import config from 'config';
 import {msgType} from "../MappingStudyForm";
 import {useHistory} from "react-router-dom";
@@ -23,6 +23,8 @@ function MSAnswers(props) {
     const paper = props.history.location.state?.paper
     const mappingStudyId = props.history.location.state?.mappingStudyId
     const researchQuestions = props.history.location.state?.researchQuestions
+    const selectedCheck = props.history.location.state?.selectedCheck;
+    const selectedUnPick = props.history.location.state?.selectedUnPick;
     const msPapers = props.history.location.state?.msPapers
     let answers = {}
 
@@ -107,7 +109,7 @@ function MSAnswers(props) {
                     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     //Show message that the selection failed
                 }
-                history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId } });
+                history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick } });
             })
             .catch(error => {
                 console.log(error);
@@ -151,9 +153,12 @@ function MSAnswers(props) {
         <div>
             <div>{paper.title}</div>
             <Table columns={columns} dataSource={rqsData}/>
-            <button type="button" onClick={handleSubmit}>
+            {/*<button type="button" onClick={handleSubmit}>*/}
+            {/*    Submit*/}
+            {/*</button>*/}
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
-            </button>
+            </Button>
         </div>
     )
 }

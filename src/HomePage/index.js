@@ -23,7 +23,7 @@ function HomePage() {
     }
 
     return (
-        <div className="col-lg-8 offset-lg-2">
+        <div className="col-lg-8 offset-lg-2" align={"center"}>
             {/*<h1>Hi {user.fullname}!</h1>*/}
             {/*<link rel="logo" href="./bearmapping-logo.png" />*/}
             <img src={logo} className="bearmapping-logo" alt="logo" />

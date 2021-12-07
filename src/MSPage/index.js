@@ -67,8 +67,8 @@ export function MSPage() {
                 'area': area,
                 'researchQuestions': researchQuestion,
                 'query': searchQuery,
-                'from': dateformat(startDate, "mm/yy"),
-                'to': dateformat(endDate, "mm/yy"),
+                'from': dateformat(startDate, "yyyy"),
+                'to': dateformat(endDate, "yyyy"),
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ export function MSPage() {
                 console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 console.log(data);
                 //return <Redirect to={{ pathname: '/list', state: { msPapers: data, selectedCheck: selectedCheck } }} />
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: id } });
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: id, selectedCheckParameter: new Set(), unselectedCheckParameter: new Set() } });
                 //return <MSList msPapers={data}/>;
             })
             .catch(error => {

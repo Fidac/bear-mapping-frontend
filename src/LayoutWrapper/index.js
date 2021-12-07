@@ -39,7 +39,7 @@ const LayoutWrapper = (WrappedComponent) => {
                         </Menu>
                     </Sider>
                     <Layout>
-                        <Header className="header" style={{background: '#e6f7ff', padding: 0}}>
+                        <Header className="header" style={{background: '#e6f7ff', padding: 0, textAlign: 'center'}}>
                             <span>Bear Mapping</span>
                         </Header>
                         <Content className="content" style={{margin: '24px 16px 0'}}>

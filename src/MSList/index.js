@@ -19,25 +19,34 @@ function MSList(props) {
     // const {msPapers, selectedCheck} = props;
     const user = useSelector(state => state.authentication.user);
     let msPapers = props.history.location.state?.msPapers
-    // let selectedCheck = props.history.location.state?.selectedCheck
+    let selectedCheckParameter = props.history.location.state?.selectedCheckParameter
+    let unselectedCheckParameter = props.history.location.state?.unselectedCheckParameter
     const mappingStudyId = props.history.location.state?.mappingStudyId
-    let selectedCheck = new Set();
+
+    let selectedCheck = selectedCheckParameter;
     let unselectedChecks = new Set();
-    let selectedUnPick = new Set();
+    // let selectedCheck = new Set();
+    // let unselectedChecks = new Set();
+    let selectedUnPick = unselectedCheckParameter;
     let unselectedUnPick = new Set();
 
     for(const temp of msPapers){
         // console.log("Processing: ", temp);
         unselectedChecks.add(temp.id);
+        unselectedUnPick.add(temp.id);
     }
 
 
     const history = useHistory();
 
-    const toggleCheckbox = (key) => {
+    const toggleCheckbox = (paper, key) => {
         console.log("Storing paper: " + key);
         console.log("Selected: ", selectedCheck);
         console.log("Not Selected: ", unselectedChecks);
+
+        if(paper.isPicked){
+            history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+        }
 
         if (!selectedCheck.has(key)) {
             unselectedChecks.delete(key)
@@ -46,12 +55,18 @@ function MSList(props) {
             unselectedChecks.add(key);
             selectedCheck.delete(key);
         }
+
+        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
-    const toggleCheckboxUnpick = (key) => {
+    const toggleCheckboxUnpick = (paper, key) => {
         console.log("Storing paper: " + key);
         console.log("Selected: ", selectedUnPick);
         console.log("Not Selected: ", unselectedUnPick);
+
+        if(paper.isUnPicked){
+            history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+        }
 
         if (!selectedUnPick.has(key)) {
             unselectedUnPick.delete(key)
@@ -60,6 +75,8 @@ function MSList(props) {
             unselectedUnPick.add(key);
             selectedUnPick.delete(key);
         }
+
+        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
     const getOptions = () => {
@@ -101,7 +118,7 @@ function MSList(props) {
                 console.log("URL" + `${config.apiUrl}/mappingStudies/${mappingStudyId}/researchQuestionsWeights/${e.value}?userId=${user.id}`);
                 console.log("RECEIVING WEIGHTS!!!")
                 console.log(msPapers[0].weight)
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
             })
             .catch(error => {
                 console.log(error);
@@ -111,6 +128,12 @@ function MSList(props) {
     const handleSubmit = () => {
         console.log("Submit Selection");
         console.log(selectedCheck);
+
+        // for(const temp of msPapers){
+        //     // console.log("Processing: ", temp);
+        //     unselectedChecks.add(temp.id);
+        //     unselectedUnPick.add(temp.id);
+        // }
         // for(let paperId in selectedCheck){
         //     console.log(paperId);
         // }
@@ -141,7 +164,7 @@ function MSList(props) {
                 // if(data == false){
                 //     //Show message that the selection failed
                 // }
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: new Set(), unselectedCheckParameter: new Set()} });
                 // window.location.reload(true);
             })
             .catch(error => {
@@ -175,7 +198,7 @@ function MSList(props) {
                 if(data == false){
                     //Show message that the selection failed
                 }
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
             })
             .catch(error => {
                 console.log(error);
@@ -184,14 +207,15 @@ function MSList(props) {
 
     const handleAnswer = (paper) => {
         console.log("Handle Answer");
-        history.push({pathname: "/answers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions} });
+        history.push({pathname: "/answers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
     const handleShowAnswers = (paper) => {
         console.log("Handle Show Answer");
         // let answers = {};
         // paperData[0].researchQuestions.map(rq => answers[rq.id] = {});
-        history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, info: [], researchQuestionId: -1} });
+        console.log("MSPapers: " + msPapers);
+        history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, info: [], researchQuestionId: -1, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
     const handlePaperWithAnswers = () => {
@@ -221,7 +245,7 @@ function MSList(props) {
                 if(data == false){
                     //Show message that the selection failed
                 }
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheck: selectedCheck} });
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
             })
             .catch(error => {
                 console.log(error);
@@ -272,8 +296,8 @@ function MSList(props) {
                 <div>
                     <input
                         type="checkbox"
-                        // checked={paper.isPicked}
-                        onClick={(event) => toggleCheckbox(paper.key)}
+                        checked={selectedCheck.has(paper.key) || paper.isPicked}
+                        onChange={(event) => toggleCheckbox(paper, paper.key)}
                     />
                     <br/><span>{paper.numberPicked}/{paper.numberParticipants}</span>
                 </div>
@@ -286,8 +310,8 @@ function MSList(props) {
                 <div>
                     <input
                         type="checkbox"
-                        // checked={paper.isUnPicked}
-                        onClick={(event) => toggleCheckboxUnpick(paper.key)}
+                        checked={selectedUnPick.has(paper.key) || paper.isUnPicked}
+                        onChange={(event) => toggleCheckboxUnpick(paper, paper.key)}
                     />
                     <br/><span>{paper.numberUnPicked}/{paper.numberParticipants}</span>
                 </div>
@@ -297,18 +321,24 @@ function MSList(props) {
             title: 'Answer',
             key: 'answer',
             render: (text, paper) => (
-                <button type="button" onClick={(event) => handleAnswer(paper)}>
+                // <button type="button" onClick={(event) => handleAnswer(paper)}>
+                //     Answer RQs
+                // </button>
+                <Button type="primary" htmlType="submit" onClick={(event) => handleAnswer(paper)}>
                     Answer RQs
-                </button>
+                </Button>
             )
         },
         {
             title: 'Show Answers',
             key: 'showAnswers',
             render: (text, paper) => (
-                <button type="button" onClick={(event) => handleShowAnswers(paper)}>
+                // <button type="button" onClick={(event) => handleShowAnswers(paper)}>
+                //     Show Answers
+                // </button>
+                <Button type="primary" htmlType="submit" onClick={(event) => handleShowAnswers(paper)}>
                     Show Answers
-                </button>
+                </Button>
             )
         },
     ];
@@ -334,13 +364,14 @@ function MSList(props) {
 
     return (
         <div>
-            <Select options={getOptions()} onChange={handleChange}/>
             <Button type="primary" htmlType="submit" onClick={handleSort}>
                 Sort Consensus
             </Button>
+            &nbsp;&nbsp;&nbsp;
             <Button type="primary" htmlType="submit" onClick={handlePaperWithAnswers}>
-                Article Answers.
+                Get Article With Answers
             </Button>
+            <Select options={getOptions()} onChange={handleChange}/>
             <Table columns={columns} dataSource={paperData}/>
             <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
