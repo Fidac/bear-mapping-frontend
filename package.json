@@ -8,7 +8,7 @@
     "license": "MIT",
     "scripts": {
         "build": "webpack --mode production",
-        "start": "webpack-dev-server --open"
+        "start": "webpack-dev-server --host 0.0.0.0 --port 80 --open"
     },
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.16.4",
