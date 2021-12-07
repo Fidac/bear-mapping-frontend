@@ -45,7 +45,7 @@ const LayoutWrapper = (WrappedComponent) => {
                         <Content className="content" style={{margin: '24px 16px 0'}}>
                             <WrappedComponent {...this.props}/>
                         </Content>
-                        <Footer className="footer" style={{textAlign: 'center'}}>Bear Mapping</Footer>
+                        {/*<Footer className="footer" style={{textAlign: 'center'}}>Bear Mapping</Footer>*/}
                     </Layout>
                 </Layout>
             );

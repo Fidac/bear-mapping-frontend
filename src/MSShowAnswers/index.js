@@ -11,6 +11,9 @@ import LayoutWrapper from "../LayoutWrapper";
 import {MSPage} from "../MSPage";
 import {useSelector} from "react-redux";
 import parse from "html-react-parser";
+import {Icon, Layout, Menu} from "antd";
+
+const {Header, Content, Footer, Sider} = Layout;
 
 
 function MSShowAnswers(props) {
@@ -149,7 +152,9 @@ function MSShowAnswers(props) {
 
     return (
         <div>
-            <div>{paper.title}</div>
+            <Header className="header" style={{background: '#e6f7ff', padding: 0, textAlign: 'center'}}>
+                <span>{paper.title}</span>
+            </Header>
             <Select options={getOptions()} onChange={handleChange}/>
             <Table columns={columns} dataSource={answersData}/>
             {/*<button type="button" onClick={handleBack}>*/}

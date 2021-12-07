@@ -11,11 +11,12 @@ import {useSelector} from "react-redux";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
+import {Icon, Layout, Menu} from "antd";
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 // import '../App/App.css';
 // import '../static/css/main.css';
-
+const {Header, Content, Footer, Sider} = Layout;
 
 function MSAnswers(props) {
     // const {msPapers, selectedCheck} = props;
@@ -151,7 +152,10 @@ function MSAnswers(props) {
 
     return (
         <div>
-            <div>{paper.title}</div>
+            {/*<div>{paper.title}</div>*/}
+            <Header className="header" style={{background: '#e6f7ff', padding: 0, textAlign: 'center'}}>
+                <span>{paper.title}</span>
+            </Header>
             <Table columns={columns} dataSource={rqsData}/>
             {/*<button type="button" onClick={handleSubmit}>*/}
             {/*    Submit*/}

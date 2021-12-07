@@ -93,7 +93,7 @@ function MSList(props) {
 
         // console.log("MS-ID")
         // console.log(paperData[0])
-        const options = rqs.map(rq => ({
+        let options = rqs.map(rq => ({
             "value" : rq.id,
             "label" : rq.question
         }))
@@ -205,6 +205,73 @@ function MSList(props) {
             });
     }
 
+    const handleSortOverall = () => {
+        console.log("SORTING BY CONSENSUS");
+        // Call Amr API here
+        let data = {
+            method: 'GET',
+            // body: JSON.stringify({
+            //     'userId': user.id,
+            // }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/articles?userId=${user.id}`, data)
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                // else {
+                //     throw new Error("EmailOfCreator must be unique.")
+                // }
+            })
+            .then(data => {
+                console.log("Successful Sort")
+                if(data == false){
+                    //Show message that the selection failed
+                }
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    const handleCluster = () => {
+        console.log("SORTING BY CLUSTER");
+        // Call Amr API here
+        let data = {
+            method: 'GET',
+            // body: JSON.stringify({
+            //     'userId': user.id,
+            // }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/articles/clusters?userId=${user.id}`, data)
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                // else {
+                //     throw new Error("EmailOfCreator must be unique.")
+                // }
+            })
+            .then(data => {
+                console.log("Successful Sort")
+                if(data == false){
+                    //Show message that the selection failed
+                }
+                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+
     const handleAnswer = (paper) => {
         console.log("Handle Answer");
         history.push({pathname: "/answers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: paperData[0].researchQuestions, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
@@ -290,6 +357,12 @@ function MSList(props) {
             render: weight => <div>{weight}</div>
         },
         {
+            title: 'Cluster',
+            dataIndex: 'cluster',
+            key: 'cluster',
+            render: cluster => <div>{cluster}</div>
+        },
+        {
             title: 'Pick',
             key: 'pick',
             render: (text, paper) => (
@@ -344,6 +417,7 @@ function MSList(props) {
     ];
     let paperData = msPapers.map(paper => {
         console.log("PPPPPPPPPPPPPPPPPPP: " + paper.picked);
+        console.log("CLUSTER: " + paper.clusterId);
         // console.log("UUUUUUUUUUUUUUUUUU: " + paper.isUnPicked);+
         return ({
             key: paper.id,
@@ -358,14 +432,23 @@ function MSList(props) {
             numberUnPicked: paper.numberUnPicked,
             numberParticipants: paper.numberParticipants,
             isPicked: paper.picked,
-            isUnPicked:paper.unPicked
+            isUnPicked:paper.unPicked,
+            cluster: paper.clusterId
         })
     });
 
     return (
         <div>
+            <Button type="primary" htmlType="submit" onClick={handleSortOverall}>
+                Sort by Overall
+            </Button>
+            &nbsp;&nbsp;&nbsp;
             <Button type="primary" htmlType="submit" onClick={handleSort}>
                 Sort Consensus
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button type="primary" htmlType="submit" onClick={handleCluster}>
+                Sort by Clusters
             </Button>
             &nbsp;&nbsp;&nbsp;
             <Button type="primary" htmlType="submit" onClick={handlePaperWithAnswers}>
