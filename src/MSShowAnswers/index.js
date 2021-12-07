@@ -18,8 +18,8 @@ function MSShowAnswers(props) {
     const paper = props.history.location.state?.paper
     const mappingStudyId = props.history.location.state?.mappingStudyId
     const researchQuestions = props.history.location.state?.researchQuestions
-    const selectedCheck = props.history.location.state?.selectedCheck;
-    const selectedUnPick = props.history.location.state?.selectedUnPick;
+    const selectedCheck = props.history.location.state?.selectedCheckParameter;
+    const selectedUnPick = props.history.location.state?.unselectedCheckParameter;
     const user = useSelector(state => state.authentication.user);
     const history = useHistory();
     // let answers = props.history.location.state?.answers;
@@ -61,7 +61,7 @@ function MSShowAnswers(props) {
                 //     console.log(usersName);
                 // })
                 console.log("Getting ANSWERS..." + data);
-                history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions, info:data, researchQuestionId: rqId} });
+                history.push({pathname: "/showAnswers", state: {msPapers: msPapers, paper: paper, mappingStudyId: mappingStudyId, researchQuestions: researchQuestions, info:data, researchQuestionId: rqId, selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
             })
             .catch(error => {
                 console.log("ERROR " + error);

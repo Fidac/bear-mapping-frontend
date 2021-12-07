@@ -23,8 +23,8 @@ function MSAnswers(props) {
     const paper = props.history.location.state?.paper
     const mappingStudyId = props.history.location.state?.mappingStudyId
     const researchQuestions = props.history.location.state?.researchQuestions
-    const selectedCheck = props.history.location.state?.selectedCheck;
-    const selectedUnPick = props.history.location.state?.selectedUnPick;
+    const selectedCheck = props.history.location.state?.selectedCheckParameter;
+    const selectedUnPick = props.history.location.state?.unselectedCheckParameter;
     const msPapers = props.history.location.state?.msPapers
     let answers = {}
 
