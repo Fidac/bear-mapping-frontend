@@ -140,8 +140,26 @@ export function MSPage() {
 
     const exportMS = (id) => {
         // Call Amr API
-
         // See how to export in REACT
+        window.open(`${config.apiUrl}/export?mappingStudyId=${id}&userId=${user.id}`);
+        // fetch(`${config.apiUrl}/export?mappingStudyId=${id}&userId=${user.id}`)
+        //     .then(res => {
+        //         if (res.ok){
+        //             return res.json();
+        //         } else {
+        //             throw new Error("Error while fetching Mapping Study details");
+        //         }
+        //     })
+        //     .then(data => {
+        //         console.log(data);
+        //         // setMSInfo(data);
+        //         // setStatusMsgType(msgType.SUCCESS);
+        //     })
+        //     .catch(error => {
+        //         setStatusMsgType(msgType.ERROR);
+        //         setStatusMsg(error.toString());
+        //     });
+
     };
 
     const shareMS = (id) => {
