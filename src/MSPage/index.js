@@ -9,6 +9,8 @@ import config from 'config';
 import {Redirect} from "react-router-dom";
 import MSList from "../MSList";
 import {useSelector} from "react-redux";
+import Loader from 'react-loader-spinner';
+// import { trackPromise } from 'react-promise-tracker';
 // import '../App/App.css';
 // import '../static/css/main.css';
 
@@ -21,11 +23,13 @@ export function MSPage() {
     const [clearFlag, setClearFlag] = useState(false);
     const history = useHistory();
     const user = useSelector(state => state.authentication.user);
-
+    const [loading, setLoading] = useState(false);
+    // let loading = false;
     // const selectedCheck = new Set();
 
     const fetchMSInfo = async () => {
         console.log("USER: " + user.id);
+        setLoading((loading) => !loading);
         await fetch(`${config.apiUrl}/mappingStudies?userId=${user.id}`)
             .then(res => {
                 if (res.ok){
@@ -35,11 +39,13 @@ export function MSPage() {
                 }
             })
             .then(data => {
+                setLoading((loading) => !loading);
                 console.log(data);
                 setMSInfo(data);
                 setStatusMsgType(msgType.SUCCESS);
             })
             .catch(error => {
+                setLoading((loading) => !loading);
                 setStatusMsgType(msgType.ERROR);
                 setStatusMsg(error.toString());
             });
@@ -55,7 +61,7 @@ export function MSPage() {
     }, []);
 
     //REST API call
-    const createMS = (name, dateOfCreation, area, researchQuestion, searchQuery, startDate, endDate) => {
+    const createMS = async (name, dateOfCreation, area, researchQuestion, searchQuery, startDate, endDate) => {
 
         console.log("USER ID" + user.id);
         let data = {
@@ -74,27 +80,30 @@ export function MSPage() {
                 'Content-Type': 'application/json',
             }
         };
-
+        setLoading((loading) => !loading);
+        // window.location.reload(true);
         console.log("DATA" + data);
-        fetch(`${config.apiUrl}/mappingStudies`, data)
+        await fetch(`${config.apiUrl}/mappingStudies`, data)
             .then(res => {
                 if (res.ok) {
-                 return res.json();
+                    return res.json();
                 }
                 // else {
                 //     throw new Error("EmailOfCreator must be unique.")
                 // }
             })
             .then(data => {
+                setLoading((loading) => !loading);
                 fetchMSInfo();
                 setClearFlag(true);
                 setStatusMsgType(msgType.SUCCESS);
-                setStatusMsg("Saved successfully");
+                //setStatusMsg("Saved successfully");
             })
             .catch(error => {
+                setLoading((loading) => !loading);
                 setStatusMsgType(msgType.ERROR);
                 console.log(error);
-                setStatusMsg( error.toString());
+                setStatusMsg(error.toString());
             });
     };
 
@@ -116,6 +125,7 @@ export function MSPage() {
                 'Content-Type': 'application/json',
             }
         };
+        setLoading((loading) => !loading);
         fetch(`${config.apiUrl}/mappingStudies/${id}?userId=${user.id}`, data)
             .then(res => {
             if (res.ok) {
@@ -126,6 +136,7 @@ export function MSPage() {
             // }
             })
             .then(data => {
+                setLoading((loading) => !loading);
                 fetchMSInfo();
                 setClearFlag(true);
                 setStatusMsgType(msgType.SUCCESS);
@@ -133,6 +144,7 @@ export function MSPage() {
                 setStatusMsg("Updated successfully");
             })
             .catch(error => {
+                setLoading((loading) => !loading);
                 setStatusMsgType(msgType.ERROR);
                 setStatusMsg(error.toString());
             });
@@ -180,15 +192,18 @@ export function MSPage() {
                 'Content-Type': 'application/json',
             },
         };
+        setLoading((loading) => !loading);
         fetch(`${config.apiUrl}/mappingStudies/${id}?userId=${user.id}`, fetchData)
             .then(res => {
                 if (res.ok) {
-                fetchMSInfo();
+                    setLoading((loading) => !loading);
+                    fetchMSInfo();
                 } else {
-                    throw new Error("Error while deleting game.");
+                    throw new Error("Error while deleting mapping study.");
                 }
             })
             .catch(error => {
+                setLoading((loading) => !loading);
                 setStatusMsgType(msgType.ERROR);
                 setStatusMsg(error.toString());
             });
@@ -286,6 +301,7 @@ export function MSPage() {
                 clearStatus={clearStatus}
             />
             {statusMsg && <div className={statusClassName}>{statusMsg}</div>}
+            {loading ? <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" /> :
             <MappingStudyTable
                 MSInfo={MSInfo}
                 setSelectedMS={setSelectedMS}
@@ -293,7 +309,7 @@ export function MSPage() {
                 listPapersMS={listPapersMS}
                 exportMS={exportMS}
                 shareMS={shareMS}
-            />
+            />}
         </Fragment>
     )
 }

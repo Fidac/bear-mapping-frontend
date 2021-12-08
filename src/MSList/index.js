@@ -11,6 +11,7 @@ import {MSPage} from "../MSPage";
 import dateformat from "dateformat";
 import {useSelector} from "react-redux";
 import {isEmpty} from "../utils/utils";
+import Loader from "react-loader-spinner";
 // import '../App/App.css';
 // import '../static/css/main.css';
 
@@ -36,7 +37,7 @@ function MSList(props) {
         unselectedUnPick.add(temp.id);
     }
 
-
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     const toggleCheckbox = (paper, key) => {
@@ -102,10 +103,12 @@ function MSList(props) {
         return options;
     }
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         console.log("CHANGEEEEEEE");
         console.log(e);
-        fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/researchQuestionsWeights/${e.value}?userId=${user.id}`)
+
+        setLoading((loading) => !loading);
+        await fetch(`${config.apiUrl}/mappingStudies/${mappingStudyId}/researchQuestionsWeights/${e.value}?userId=${user.id}`)
             .then(res => {
                 if (res.ok) {
                     return res.json();
@@ -115,12 +118,21 @@ function MSList(props) {
                 // }
             })
             .then(data => {
+                setLoading((loading) => !loading);
                 console.log("URL" + `${config.apiUrl}/mappingStudies/${mappingStudyId}/researchQuestionsWeights/${e.value}?userId=${user.id}`);
                 console.log("RECEIVING WEIGHTS!!!")
                 console.log(msPapers[0].weight)
-                history.push({pathname: "/list", state: {msPapers: data, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+                history.push({pathname: "/list",
+                    state: {
+                        msPapers: data,
+                        mappingStudyId: mappingStudyId,
+                        selectedCheckParameter: selectedCheck,
+                        unselectedCheckParameter: selectedUnPick
+                    }
+                });
             })
             .catch(error => {
+                setLoading((loading) => !loading);
                 console.log(error);
             });
     }
@@ -455,7 +467,8 @@ function MSList(props) {
                 Get Article With Answers
             </Button>
             <Select options={getOptions()} onChange={handleChange}/>
-            <Table columns={columns} dataSource={paperData}/>
+            {loading ? <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" /> :
+            <Table columns={columns} dataSource={paperData}/>}
             <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
             </Button>

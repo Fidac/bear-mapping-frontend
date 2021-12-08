@@ -143,6 +143,7 @@ function MSShowAnswers(props) {
     // })
     let answersData = info.map(ra => {
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + ra.userId);
+        console.log("INFO " + ra.answer);
         return ({
             key: ra.userId,
             name: ra.userName,
