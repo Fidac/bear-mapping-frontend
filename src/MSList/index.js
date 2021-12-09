@@ -46,18 +46,22 @@ function MSList(props) {
         console.log("Not Selected: ", unselectedChecks);
 
         if(paper.isPicked){
+            //history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+        }
+
+        else{
+            if (!selectedCheck.has(key)) {
+                unselectedChecks.delete(key)
+                selectedCheck.add(key);
+            } else {
+                unselectedChecks.add(key);
+                selectedCheck.delete(key);
+            }
+
             history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
         }
 
-        if (!selectedCheck.has(key)) {
-            unselectedChecks.delete(key)
-            selectedCheck.add(key);
-        } else {
-            unselectedChecks.add(key);
-            selectedCheck.delete(key);
-        }
 
-        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
     const toggleCheckboxUnpick = (paper, key) => {
@@ -66,18 +70,21 @@ function MSList(props) {
         console.log("Not Selected: ", unselectedUnPick);
 
         if(paper.isUnPicked){
+            //history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
+            return;
+        }
+
+        else{
+            if (!selectedUnPick.has(key)) {
+                unselectedUnPick.delete(key)
+                selectedUnPick.add(key);
+            } else {
+                unselectedUnPick.add(key);
+                selectedUnPick.delete(key);
+            }
+
             history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
         }
-
-        if (!selectedUnPick.has(key)) {
-            unselectedUnPick.delete(key)
-            selectedUnPick.add(key);
-        } else {
-            unselectedUnPick.add(key);
-            selectedUnPick.delete(key);
-        }
-
-        history.push({pathname: "/list", state: {msPapers: msPapers, mappingStudyId: mappingStudyId , selectedCheckParameter: selectedCheck, unselectedCheckParameter: selectedUnPick} });
     }
 
     const getOptions = () => {
